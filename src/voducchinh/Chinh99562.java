@@ -111,14 +111,13 @@ public class Chinh99562 {
         try (Scanner sc = new Scanner(System.in)) {
             System.out.println("Nhap ten sinh vien");
             String ten = sc.nextLine();
-            boolean bool = false;
             for (int i = 0; i < qlsv.length; i++) {
                 if (ten.equals(qlsv[i])) {
                     ten = qlsv[i];
-                    bool = true;
+                    return ten;
                 }
             }
-            return bool ? ten : "khong tim thay";
+            return "khong tim thay";
         }
     }
 
