@@ -1,6 +1,7 @@
 package voducchinh;
 
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Chinh99562 {
@@ -9,6 +10,9 @@ public class Chinh99562 {
             { { "0", "5", "3", "10" } } };
 
     public static void main(String[] args) throws Exception {
+        System.out.println("-----THONG TIN SINH VIEN-----");
+        System.out.println("Ma so sv" + "\t" + "ten" + "\t" + "diem");
+        hienThi(qlsvGo);
         System.out.println("so luong sinh vien co diem >= 5: " + soLuongSVTren5(qlsvGo[2][0]));
         System.out.println("so luong sinh vien co diem < 5: " + soLuongSVDuoi5(qlsvGo[2][0]));
         System.out.println(timSVTheoMS(qlsvGo[0][0]));
@@ -16,33 +20,35 @@ public class Chinh99562 {
         System.out.println("sinh vien co diem thap nhat: " + timSVDiemThapNhat(qlsvGo[2][0]));
         System.out.print("sap xep tang theo ma so sinh vien: ");
         sapXepTangMS(qlsvGo[0][0]);
-        // System.out.println();
         sapXepGiamDiem(qlsvGo[2][0]);
         System.out.print("sap xep theo ten: ");
         sapXepTen(qlsvGo[1][0]);
     }
 
+    public static void hienThi(String[][][] qlsv) {
+        for (int i = 0; i < qlsv[0][0].length; i++) {
+            System.out.print(qlsv[0][0][i] + "   \t" + qlsv[1][0][i] + "  \t" + qlsv[2][0][i] + "\n");
+        }
+    }
+
     /* quan ly sinh vien */
     // so sinh vien co diem >= 5
     public static int soLuongSVTren5(String[] qlsv) {
-        // System.out.println(qlsv[0].length());
-        int diem = 5;
         int dem = 0;
         for (int i = 0; i < qlsv.length; i++) {
             int diemTrongMang = Integer.parseInt(qlsv[i]);
-            if (diemTrongMang >= diem) {
+            if (diemTrongMang >= 5) {
                 dem++;
             }
         }
         return dem;
     }
 
+    /* so sinh vien co diem < 5 */
     public static int soLuongSVDuoi5(String[] qlsv) {
-        // so sinh vien co diem < 5
-        int diem = 5;
         int dem = 0;
         for (int i = 0; i < qlsv.length; i++) {
-            if (Integer.parseInt(qlsv[i]) < diem) {
+            if (Integer.parseInt(qlsv[i]) < 5) {
                 dem++;
             }
         }
@@ -64,22 +70,23 @@ public class Chinh99562 {
                     dem = i;
                     bool = true;
                     tenSV = qlsvGo[1][0][dem];
+                    break;
                 }
             }
 
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
+        } catch (InputMismatchException e) {
+            e.printStackTrace(); // print error
         }
-        return bool ? "sinh vien co ma so la: " + maSoSV + " la: " + tenSV : "khong tim thay sinh vien co ma so " + maSoSV;
+        return bool ? "sinh vien co ma so la: " + maSoSV + " la: " + tenSV
+                : "khong tim thay sinh vien co ma so " + maSoSV;
     }
 
+    /* sinh vien co diem cao nhat, return type String */
     public static String timSVDiemCaoNhat(String[] qlsv) {
         String tenSVDiemCaoNhat = "";
         int diemCaoNhat = Integer.parseInt(qlsv[0]);
         int dem = 0;
         for (int i = 1; i < qlsv.length; i++) {
-            // int diemTrongMang = Integer.parseInt(qlsv[i]);
-            
             if (Integer.parseInt(qlsv[i]) > diemCaoNhat) {
                 diemCaoNhat = Integer.parseInt(qlsv[i]);
                 dem = i;
@@ -89,6 +96,7 @@ public class Chinh99562 {
         return tenSVDiemCaoNhat;
     }
 
+    /* sinh vien co diem thap nhat, return type String */
     public static String timSVDiemThapNhat(String[] qlsv) {
         String tenSVDiemThapNhat = "";
         int DiemThapNhat = Integer.parseInt(qlsv[0]);
@@ -106,24 +114,23 @@ public class Chinh99562 {
         return tenSVDiemThapNhat;
     }
 
+    /* tim sinh vien theo ten */
     public static String timSVTheoTen(String[] qlsv) {
-
         try (Scanner sc = new Scanner(System.in)) {
             System.out.println("Nhap ten sinh vien");
             String ten = sc.nextLine();
-            boolean bool = false;
             for (int i = 0; i < qlsv.length; i++) {
                 if (ten.equals(qlsv[i])) {
                     ten = qlsv[i];
-                    bool = true;
+                    return ten;
                 }
             }
-            return bool ? ten : "khong tim thay";
+            return "khong tim thay";
         }
     }
 
+    /* sap xep tang theo ma so sinh vien */
     public static void sapXepTangMS(String[] qlsv) {
-
         for (int i = 0; i < qlsv.length; i++) {
             for (int j = 0; j < qlsv.length - i - 1; j++) {
                 if (Integer.parseInt(qlsv[j]) > Integer.parseInt(qlsv[j + 1])) {
@@ -136,8 +143,8 @@ public class Chinh99562 {
         System.out.println(Arrays.toString(qlsv));
     }
 
+    /* sap xep diem giam dan */
     public static void sapXepGiamDiem(String[] qlsv) {
-        // diem giam dan
 
         for (int i = 0; i < qlsv.length; i++) {
             for (int j = 0; j < qlsv.length - i - 1; j++) {
@@ -153,12 +160,11 @@ public class Chinh99562 {
         System.out.println();
     }
 
+    /* sap xep ten theo bang chu cai */
     public static void sapXepTen(String[] qlsv) {
         for (int i = 0; i < qlsv.length; i++) {
             for (int j = 0; j < qlsv.length - i - 1; j++) {
-                char c = qlsv[j].charAt(0);
-                char c1 = qlsv[j + 1].charAt(0);
-                if (c > c1) {
+                if (qlsv[j].charAt(0) > qlsv[j + 1].charAt(0)) {
                     String temp = qlsv[j];
                     qlsv[j] = qlsv[j + 1];
                     qlsv[j + 1] = temp;
