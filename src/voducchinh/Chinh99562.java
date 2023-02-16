@@ -7,22 +7,39 @@ import java.util.Scanner;
 public class Chinh99562 {
     static String[][][] qlsvGo = { { { "10001", "10002", "10003", "10004" } },
             { { "Tuan", "Kiet", "Dat", "Diem" } },
-            { { "0", "5", "3", "10" } } };
+            { { "0.0", "5.5", "3.8", "10" } } };
 
     public static void main(String[] args) throws Exception {
         System.out.println("-----THONG TIN SINH VIEN-----");
         System.out.println("Ma so sv" + "\t" + "ten" + "\t" + "diem");
         hienThi(qlsvGo);
+
         System.out.println("so luong sinh vien co diem >= 5: " + soLuongSVTren5(qlsvGo[2][0]));
         System.out.println("so luong sinh vien co diem < 5: " + soLuongSVDuoi5(qlsvGo[2][0]));
         System.out.println(timSVTheoMS(qlsvGo[0][0]));
         System.out.println("sinh vien co diem cao nhat: " + timSVDiemCaoNhat(qlsvGo[2][0]));
         System.out.println("sinh vien co diem thap nhat: " + timSVDiemThapNhat(qlsvGo[2][0]));
-        System.out.print("sap xep tang theo ma so sinh vien: ");
-        sapXepTangMS(qlsvGo[0][0]);
-        sapXepGiamDiem(qlsvGo[2][0]);
-        System.out.print("sap xep theo ten: ");
-        sapXepTen(qlsvGo[1][0]);
+
+        /* sap xep tang theo ma so sinh vien */
+        System.out.println();
+        System.out.println("sap xep tang theo ma so sinh vien: ");
+        System.out.println("Ma so sv" + "\t" + "ten" + "\t" + "diem");
+        sapXepTangMS(qlsvGo);
+        hienThi(qlsvGo);
+
+        /* sap xep giam theo diem */
+        System.out.println();
+        sapXepGiamDiem(qlsvGo);
+        System.out.println("sap xep giam theo diem");
+        System.out.println("Ma so sv" + "\t" + "ten" + "\t" + "diem");
+        hienThi(qlsvGo);
+
+        /* sap xep theo ten (theo bang chu cai) */
+        System.out.println();
+        System.out.println("sap xep theo ten: ");
+        System.out.println("Ma so sv" + "\t" + "ten" + "\t" + "diem");
+        sapXepTen(qlsvGo);
+        hienThi(qlsvGo);
     }
 
     public static void hienThi(String[][][] qlsv) {
@@ -36,7 +53,7 @@ public class Chinh99562 {
     public static int soLuongSVTren5(String[] qlsv) {
         int dem = 0;
         for (int i = 0; i < qlsv.length; i++) {
-            int diemTrongMang = Integer.parseInt(qlsv[i]);
+            float diemTrongMang = Float.parseFloat(qlsv[i]);
             if (diemTrongMang >= 5) {
                 dem++;
             }
@@ -48,7 +65,7 @@ public class Chinh99562 {
     public static int soLuongSVDuoi5(String[] qlsv) {
         int dem = 0;
         for (int i = 0; i < qlsv.length; i++) {
-            if (Integer.parseInt(qlsv[i]) < 5) {
+            if (Float.parseFloat(qlsv[i]) < 5) {
                 dem++;
             }
         }
@@ -65,7 +82,7 @@ public class Chinh99562 {
             int dem = 0;
 
             for (int i = 0; i < qlsv.length; i++) {
-                int maSo = Integer.parseInt(qlsv[i]);
+                float maSo = Float.parseFloat(qlsv[i]);
                 if (maSo == maSoSV) {
                     dem = i;
                     bool = true;
@@ -84,11 +101,11 @@ public class Chinh99562 {
     /* sinh vien co diem cao nhat, return type String */
     public static String timSVDiemCaoNhat(String[] qlsv) {
         String tenSVDiemCaoNhat = "";
-        int diemCaoNhat = Integer.parseInt(qlsv[0]);
+        float diemCaoNhat = Float.parseFloat(qlsv[0]);
         int dem = 0;
         for (int i = 1; i < qlsv.length; i++) {
-            if (Integer.parseInt(qlsv[i]) > diemCaoNhat) {
-                diemCaoNhat = Integer.parseInt(qlsv[i]);
+            if (Float.parseFloat(qlsv[i]) > diemCaoNhat) {
+                diemCaoNhat = Float.parseFloat(qlsv[i]);
                 dem = i;
             }
         }
@@ -99,10 +116,10 @@ public class Chinh99562 {
     /* sinh vien co diem thap nhat, return type String */
     public static String timSVDiemThapNhat(String[] qlsv) {
         String tenSVDiemThapNhat = "";
-        int DiemThapNhat = Integer.parseInt(qlsv[0]);
+        float DiemThapNhat = Float.parseFloat(qlsv[0]);
         int dem = 0;
         for (int i = 1; i < qlsv.length; i++) {
-            int diemTrongMang = Integer.parseInt(qlsv[i]);
+            float diemTrongMang = Float.parseFloat(qlsv[i]);
 
             if (diemTrongMang < DiemThapNhat) {
                 DiemThapNhat = diemTrongMang;
@@ -130,48 +147,71 @@ public class Chinh99562 {
     }
 
     /* sap xep tang theo ma so sinh vien */
-    public static void sapXepTangMS(String[] qlsv) {
-        for (int i = 0; i < qlsv.length; i++) {
-            for (int j = 0; j < qlsv.length - i - 1; j++) {
-                if (Integer.parseInt(qlsv[j]) > Integer.parseInt(qlsv[j + 1])) {
-                    String temp = qlsv[j];
-                    qlsv[j] = qlsv[j + 1];
-                    qlsv[j + 1] = temp;
+    public static void sapXepTangMS(String[][][] qlsv) {
+        for (int i = 0; i < qlsv[1][0].length; i++) {
+            for (int j = 0; j < qlsv[1][0].length - i - 1; j++) {
+                if (Float.parseFloat(qlsv[0][0][j]) > Float.parseFloat(qlsv[0][0][j + 1])) {
+                    String tam1, tam2, tam3;
+                    tam1 = qlsv[0][0][j];
+                    qlsv[0][0][j] = qlsv[0][0][j + 1];
+                    qlsv[0][0][j + 1] = tam1;
+
+                    tam2 = qlsv[1][0][j];
+                    qlsv[1][0][j] = qlsv[1][0][j + 1];
+                    qlsv[1][0][j + 1] = tam2;
+
+                    tam3 = qlsv[2][0][j];
+                    qlsv[2][0][j] = qlsv[2][0][j + 1];
+                    qlsv[2][0][j + 1] = tam3;
                 }
             }
         }
-        System.out.println(Arrays.toString(qlsv));
     }
 
     /* sap xep diem giam dan */
-    public static void sapXepGiamDiem(String[] qlsv) {
+    public static void sapXepGiamDiem(String[][][] qlsv) {
 
-        for (int i = 0; i < qlsv.length; i++) {
-            for (int j = 0; j < qlsv.length - i - 1; j++) {
-                if (Integer.parseInt(qlsv[j]) < Integer.parseInt(qlsv[j + 1])) {
-                    String temp = qlsv[j];
-                    qlsv[j] = qlsv[j + 1];
-                    qlsv[j + 1] = temp;
+        for (int i = 0; i < qlsv[2][0].length; i++) {
+            for (int j = 0; j < qlsv[2][0].length - i - 1; j++) {
+                if (Float.parseFloat(qlsv[2][0][j]) < Float.parseFloat(qlsv[2][0][j + 1])) {
+                    String tam1, tam2, tam3;
+                    tam1 = qlsv[0][0][j];
+                    qlsv[0][0][j] = qlsv[0][0][j + 1];
+                    qlsv[0][0][j + 1] = tam1;
+
+                    tam2 = qlsv[1][0][j];
+                    qlsv[1][0][j] = qlsv[1][0][j + 1];
+                    qlsv[1][0][j + 1] = tam2;
+
+                    tam3 = qlsv[2][0][j];
+                    qlsv[2][0][j] = qlsv[2][0][j + 1];
+                    qlsv[2][0][j + 1] = tam3;
                 }
             }
         }
-        System.out.print("diem giam dan: ");
-        System.out.println(Arrays.toString(qlsv));
-        System.out.println();
     }
 
     /* sap xep ten theo bang chu cai */
-    public static void sapXepTen(String[] qlsv) {
-        for (int i = 0; i < qlsv.length; i++) {
-            for (int j = 0; j < qlsv.length - i - 1; j++) {
-                if (qlsv[j].charAt(0) > qlsv[j + 1].charAt(0)) {
-                    String temp = qlsv[j];
-                    qlsv[j] = qlsv[j + 1];
-                    qlsv[j + 1] = temp;
+    public static void sapXepTen(String[][][] qlsv) {
+        for (int i = 0; i < qlsv[1][0].length; i++) {
+            for (int j = 0; j < qlsv[1][0].length - i - 1; j++) {
+                if (qlsv[1][0][j].charAt(0) > qlsv[1][0][j + 1].charAt(0)) {
+                    // swap three field
+                    String tam1, tam2, tam3;
+                    tam1 = qlsv[0][0][j];
+                    qlsv[0][0][j] = qlsv[0][0][j + 1];
+                    qlsv[0][0][j + 1] = tam1;
+
+                    tam2 = qlsv[1][0][j];
+                    qlsv[1][0][j] = qlsv[1][0][j + 1];
+                    qlsv[1][0][j + 1] = tam2;
+
+                    tam3 = qlsv[2][0][j];
+                    qlsv[2][0][j] = qlsv[2][0][j + 1];
+                    qlsv[2][0][j + 1] = tam3;
                 }
             }
         }
-        System.out.println(Arrays.toString(qlsv));
     }
 
 }
